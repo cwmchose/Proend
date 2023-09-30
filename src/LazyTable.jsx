@@ -79,7 +79,7 @@ export default function LazyLoadDemo() {
   };
 
   return (
-    <div className="card">
+    <div className="page">
       <DataTable
         value={proteins}
         lazy

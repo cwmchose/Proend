@@ -1,12 +1,58 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
 .table-container {
   padding: 4rem;
   background-color: white;
   border-radius: 7px;
+}
+
+.header {
+  height: 4rem;
+  padding: 1rem 4rem;
+  background-color: #5386e4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item {
+  margin-left: 4rem;
+}
+
+.page {
+  height: 100vh - 4rem;
+  margin: 2rem;
+  padding-top: 5rem;
+}
+
+.logo-text {
+  font-family: math;
+  font-size: 2rem;
+  color: white;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container div {
+  max-width: 50%;
+}
+
+.info-container p {
+  margin-bottom: 3rem;
+}
+
+.table-button {
+  background-color: black;
+  color: white;
+  border-radius: 7px;
+  padding: 10px;
+}
+
+button {
+  background-color: black;
+  color: white;
 }
