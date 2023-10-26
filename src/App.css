@@ -8,28 +8,29 @@
 }
 
 .header {
-  height: 4rem;
-  padding: 1rem 4rem;
-  background-color: #5386e4;
+  height: 7rem;
+  padding: 1rem 4rem 1rem 0rem;
+  background-color: rgb(235 255 255);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+/* background-color: #5386e4; */
+
 .item {
   margin-left: 4rem;
+  font-size: 24px;
+  color: #5386e4;
 }
 
 .page {
   height: 100vh - 4rem;
-  margin: 2rem;
-  padding-top: 5rem;
+  margin: 4rem;
 }
 
-.logo-text {
-  font-family: math;
-  font-size: 2rem;
-  color: white;
+.logo-text img {
+  height: 5rem;
 }
 
 .container {

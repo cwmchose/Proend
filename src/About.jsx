@@ -8,17 +8,24 @@ function About() {
         <div className="info-container">
           <h1>About</h1>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            Welcome to ProEnd - go-to tool for exploring the universe of
+            proteins! ProEnd is a gateway to understanding the crucial role of
+            proteasomes in health and disease. By focusing on the regulators of
+            proteasomes, this tool shines a spotlight on the 20S proteasome
+            architecture and the intriguing HbYX motif. Did you know this tiny
+            tri-peptide motif is a key player in the protein degradation
+            pathways? With ProEnd, you get to discover new molecules and explore
+            the significance of proteasome regulators, as it seamlessly sifts
+            through proteins searching for the enigmatic HbYX molecules. Dive in
+            to unravel the mysteries of proteins and join us in the exciting
+            journey of discovery!
           </p>
           <Link className="table-button" to="/table">
             See Table
           </Link>
+          {/* <div>
+            <img src={protGrid} height={"300px"} />
+          </div> */}
         </div>
         <div>
           <img src={prot} />

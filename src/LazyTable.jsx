@@ -2,17 +2,22 @@ import { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
-const baseUrl = "http://localhost:5050";
+const apiKey = import.meta.env.API_KEY;
+
+// const baseUrl = "http://localhost:5050";
+const apiUrl =
+  "https://us-east-2.aws.data.mongodb-api.com/app/data-wlxyk/endpoint/data/v1";
 
 const mapSort = (event) => {
   return { [event.sortField]: event.sortOrder };
 };
 
 async function getProteins(event) {
-  let results = await fetch(`${baseUrl}/proteins/`, {
+  let results = await fetch(`${apiUrl}/proteins/`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
+      apiKey: apiKey,
     },
     body: JSON.stringify({
       query: {
@@ -101,6 +106,13 @@ export default function LazyLoadDemo() {
         <Column
           field="id"
           header="Protein ID"
+          sortable
+          filter
+          filterPlaceholder="Search"
+        />
+        <Column
+          field="gene"
+          header="Gene"
           sortable
           filter
           filterPlaceholder="Search"
