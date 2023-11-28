@@ -1,23 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "./contexts/UserContext";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
 const apiKey = import.meta.env.API_KEY;
 
-// const baseUrl = "http://localhost:5050";
-const apiUrl =
-  "https://us-east-2.aws.data.mongodb-api.com/app/data-wlxyk/endpoint/data/v1";
+const apiUrl = "http://localhost:5050";
+// const apiUrl =
+//   "https://us-east-2.aws.data.mongodb-api.com/app/data-wlxyk/endpoint";
 
 const mapSort = (event) => {
   return { [event.sortField]: event.sortOrder };
 };
 
-async function getProteins(event) {
-  let results = await fetch(`${apiUrl}/proteins/`, {
+async function getProteins(event, user) {
+  let results = await fetch(`${apiUrl}/proteins`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      apiKey: apiKey,
+      Authorization: `Bearer ${user._accessToken}`,
     },
     body: JSON.stringify({
       query: {
@@ -37,6 +38,19 @@ async function getProteins(event) {
 }
 
 export default function LazyLoadDemo() {
+  const { user, createUser } = useContext(UserContext);
+
+  useEffect(() => {
+    const createUserNow = async () => {
+      if (!user) {
+        await createUser();
+      }
+    };
+    createUserNow();
+  }, []);
+
+  console.log(user);
+
   const [loading, setLoading] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
   const [proteins, setProteins] = useState(null);
@@ -56,14 +70,14 @@ export default function LazyLoadDemo() {
   });
 
   useEffect(() => {
-    loadLazyData();
-  }, [lazyState]);
+    loadLazyData(user);
+  }, [lazyState, user]);
 
-  const loadLazyData = () => {
+  const loadLazyData = (user) => {
     setLoading(true);
-
+    if (!user) return;
     //imitate delay of a backend call
-    getProteins(lazyState).then((data) => {
+    getProteins(lazyState, user).then((data) => {
       setTotalRecords(data.totalRecords);
       setProteins(data.proteins);
       setLoading(false);
