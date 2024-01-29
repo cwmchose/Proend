@@ -3,7 +3,7 @@ import { UserContext } from "./contexts/UserContext";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
-const apiKey = import.meta.env.API_KEY;
+// const apiKey = import.meta.env.API_KEY;
 
 const apiUrl = "http://localhost:5050";
 // const apiUrl =
@@ -76,7 +76,6 @@ export default function LazyLoadDemo() {
   const loadLazyData = (user) => {
     setLoading(true);
     if (!user) return;
-    //imitate delay of a backend call
     getProteins(lazyState, user).then((data) => {
       setTotalRecords(data.totalRecords);
       setProteins(data.proteins);
