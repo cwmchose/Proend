@@ -1,8 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 import logo from "./assets/proend-logo.png";
 
-// red 235 green 255 blue 255
-
 function Layout() {
   return (
     <>
@@ -17,6 +15,12 @@ function Layout() {
           </Link>
           <Link className="item" to="/table">
             Dataset
+          </Link>
+          <Link className="item" to="/findings">
+            Findings
+          </Link>
+          <Link className="item" to="/validation">
+            Validation
           </Link>
         </div>
       </nav>
