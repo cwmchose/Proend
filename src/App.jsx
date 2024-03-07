@@ -4,7 +4,7 @@ import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "./App.css";
 
-import Table from "./Table";
+import Table from "./Table/Table";
 import About from "./About";
 import Layout from "./Layout";
 

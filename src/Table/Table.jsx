@@ -1,43 +1,14 @@
 import { useState, useEffect, useContext } from "react";
-import { UserContext } from "./contexts/UserContext";
+import { useSearchParams } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { getProteins, queryParamsFromEvent } from "./util";
 
 // const apiKey = import.meta.env.API_KEY;
 
-const apiUrl = "http://localhost:5050";
-// const apiUrl =
-//   "https://us-east-2.aws.data.mongodb-api.com/app/data-wlxyk/endpoint";
-
-const mapSort = (event) => {
-  return { [event.sortField]: event.sortOrder };
-};
-
-async function getProteins(event, user) {
-  let results = await fetch(`${apiUrl}/proteins`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      Authorization: `Bearer ${user._accessToken}`,
-    },
-    body: JSON.stringify({
-      query: {
-        pageNumber: event.page,
-        pageSize: event.rows,
-        filter: event.filters,
-        sort: mapSort(event),
-      },
-    }),
-  }).then((resp) => resp.json());
-
-  return {
-    totalRecords: results.total,
-    proteins: results.proteins,
-    page: event.page,
-  };
-}
-
-export default function LazyLoadDemo() {
+export default function Table() {
+  let [searchParams, setSearchParams] = useSearchParams();
   const { user, createUser } = useContext(UserContext);
 
   useEffect(() => {
@@ -48,8 +19,6 @@ export default function LazyLoadDemo() {
     };
     createUserNow();
   }, []);
-
-  console.log(user);
 
   const [loading, setLoading] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -63,20 +32,23 @@ export default function LazyLoadDemo() {
     filters: {
       id: { value: "", matchMode: "contains" },
       name: { value: "", matchMode: "contains" },
-      motif: { value: "", matchMode: "contains" },
+      motif: { value: "L", matchMode: "contains" },
       species: { value: "", matchMode: "contains" },
       domain: { value: "", matchMode: "contains" },
     },
   });
 
   useEffect(() => {
-    loadLazyData(user);
-  }, [lazyState, user]);
+    loadLazyData();
+  }, [lazyState]);
+  //   loadLazyData(user);
+  // }, [lazyState, user]);
 
-  const loadLazyData = (user) => {
+  const loadLazyData = () => {
     setLoading(true);
-    if (!user) return;
-    getProteins(lazyState, user).then((data) => {
+    // if (!user) return;
+    getProteins(lazyState).then((data) => {
+      setSearchParams(queryParamsFromEvent(lazyState));
       setTotalRecords(data.totalRecords);
       setProteins(data.proteins);
       setLoading(false);
@@ -84,15 +56,18 @@ export default function LazyLoadDemo() {
   };
 
   const onPage = (event) => {
+    setSearchParams(queryParamsFromEvent(event));
     setlazyState(event);
   };
 
   const onSort = (event) => {
+    setSearchParams(queryParamsFromEvent(event));
     setlazyState(event);
   };
 
   const onFilter = (event) => {
     event["first"] = 0;
+    setSearchParams(queryParamsFromEvent(event));
     setlazyState(event);
   };
 
