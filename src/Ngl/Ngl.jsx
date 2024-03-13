@@ -50,7 +50,6 @@ function AASequence({ sequence }) {
       x++;
     }
   }
-  // console.log({ blocks, nonHbYX, hbyx, total, hasRemainer, blockCount });
 
   // edge case example: A0A010QH72
   function BlockOf10({ letters, multiple, isHbYX }) {
@@ -74,6 +73,7 @@ function AASequence({ sequence }) {
             height: "15px",
             display: "flex",
             justifyContent: "space-between",
+            userSelect: "none",
           }}
         >
           <span></span>
@@ -83,18 +83,12 @@ function AASequence({ sequence }) {
           <span>{aas}</span>
           {isHbYX && (
             <>
-              {/* <Tooltip target=".hbyx" hideEvent="lol" /> */}
               <span
                 style={{
                   color: "red",
                   fontWeight: "bold",
                   textDecoration: "underline",
                 }}
-                className="hbyx"
-                data-pr-tooltip="HbYX Motif"
-                data-pr-position="top"
-                data-pr-at="right+5 top"
-                data-pr-my="left center-2"
               >
                 {hbyx}
               </span>
@@ -109,8 +103,7 @@ function AASequence({ sequence }) {
     <div
       style={{
         fontFamily: "monospace",
-        maxWidth: "60%",
-        maxHeight: "90%",
+        maxWidth: "1000px",
         display: "flex",
         flexWrap: "wrap",
         overflow: "auto",
@@ -141,12 +134,10 @@ export function ProteinViewer({ id }) {
     });
     // load a PDB structure and consume the returned `Promise`
     const url = `https://alphafold.ebi.ac.uk/files/AF-${id}-F1-model_v4.pdb`;
-    console.log(url);
     stage
       .loadFile(url, { defaultRepresentation: "true" })
       .then(function (component) {
         component.autoView();
-        console.log(stage);
         const typeIds = stage.compList[0].structure.residueStore.residueTypeId;
         const residueMap = stage.compList[0].structure.residueMap;
         const resCount = stage.compList[0].structure.residueStore.count;
@@ -165,7 +156,7 @@ export function ProteinViewer({ id }) {
     <div style={{ display: "flex" }}>
       <div
         id="my-stage"
-        style={{ height: "300px", width: "400px", marginRight: "20px" }}
+        style={{ height: "350px", width: "450px", marginRight: "20px" }}
       ></div>
       <AASequence sequence={residues} />
     </div>

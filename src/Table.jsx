@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "./contexts/UserContext";
 import { DataTable } from "primereact/datatable";
+import { Dropdown } from "primereact/dropdown";
 import { Column } from "primereact/column";
 import { ProteinViewer } from "./Ngl/Ngl";
 
@@ -38,36 +39,41 @@ async function getProteins(event, user) {
   };
 }
 
-export default function LazyLoadDemo() {
+function DomainFilter(options) {
+  return (
+    <Dropdown
+      value={options.value}
+      options={["bacteria", "eukarya", "archaea", "virus"]}
+      onChange={(e) => options.filterApplyCallback(e.value)}
+      placeholder="Select One"
+      className="p-column-filter"
+      showClear
+      style={{ minWidth: "12rem" }}
+    />
+  );
+}
+
+export default function Table() {
   const { user, createUser } = useContext(UserContext);
-
-  useEffect(() => {
-    const createUserNow = async () => {
-      if (!user) {
-        await createUser();
-      }
-    };
-    createUserNow();
-  }, []);
-
-  console.log(user);
 
   const [loading, setLoading] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
   const [proteins, setProteins] = useState(null);
-  const [selected, setSelected] = useState(null);
+  const [expandedRows, setExpandedRows] = useState(null);
+  const [currentExpanded, setCurrentExpanded] = useState(null);
   const [lazyState, setlazyState] = useState({
     first: 0,
-    rows: 10,
+    rows: 100,
     page: 0,
     sortField: "id",
     sortOrder: 1,
     filters: {
       id: { value: "", matchMode: "contains" },
+      gene: { value: "", matchMode: "contains" },
       name: { value: "", matchMode: "contains" },
       motif: { value: "", matchMode: "contains" },
       species: { value: "", matchMode: "contains" },
-      domain: { value: "", matchMode: "contains" },
+      domain: { value: null, matchMode: "contains" },
     },
   });
 
@@ -87,25 +93,25 @@ export default function LazyLoadDemo() {
   };
 
   const onPage = (event) => {
+    setExpandedRows(null);
+    setCurrentExpanded(null);
     setlazyState(event);
   };
 
   const onSort = (event) => {
+    setExpandedRows(null);
+    setCurrentExpanded(null);
     setlazyState(event);
   };
 
   const onFilter = (event) => {
     event["first"] = 0;
+    setExpandedRows(null);
+    setCurrentExpanded(null);
     setlazyState(event);
   };
 
-  const onOpenPanel = (event) => {
-    console.log(event);
-    setSelected(event.data);
-  };
-
-  console.log(selected);
-
+  console.log("hello");
   return (
     <div className="page">
       <DataTable
@@ -115,7 +121,7 @@ export default function LazyLoadDemo() {
         dataKey="id"
         paginator
         first={lazyState.first}
-        rows={10}
+        rows={100}
         totalRecords={totalRecords}
         onPage={onPage}
         onSort={onSort}
@@ -123,8 +129,23 @@ export default function LazyLoadDemo() {
         sortOrder={lazyState.sortOrder}
         onFilter={onFilter}
         filters={lazyState.filters}
+        size="small"
         loading={loading}
         tableStyle={{ minWidth: "75rem" }}
+        expandedRows={expandedRows}
+        onRowToggle={(e) => {
+          // this logic allows only 1 row to be expanded, cannot allow multiple due to ngl constraints
+          if (!currentExpanded) {
+            setExpandedRows(e.data);
+            setCurrentExpanded(Object.keys(e.data)[0]);
+          } else {
+            let newObject = { ...e.data };
+            delete newObject[currentExpanded];
+            setExpandedRows(newObject);
+            setCurrentExpanded(Object.keys(newObject)[0]);
+          }
+        }}
+        rowExpansionTemplate={ProteinPanel}
       >
         <Column
           body={LinkCell}
@@ -166,37 +187,24 @@ export default function LazyLoadDemo() {
           field="domain"
           header="Domain"
           filter
-          filterPlaceholder="Search"
+          filterElement={DomainFilter}
+          showFilterMenu={false}
         />
-        <Column body={ViewCell}></Column>
+        <Column expander={true}></Column>
       </DataTable>
     </div>
   );
 }
 
-const headerHeight = 137;
-const rowHeight = 85;
-
-function ProteinPanel({ protein }) {
-  const { id, rowNumber } = protein;
-  console.log(rowNumber);
-  const top = headerHeight + rowHeight * (rowNumber + 1) + "px";
-  console.log(top);
-
-  console.log("here");
+function ProteinPanel({ id }) {
   return (
     <div
       style={{
         height: "400px",
-        left: "0",
-        top,
-        backgroundColor: "#f9fafb",
+        // backgroundColor: "#f9fafb",
         border: "1px solid #dee2e6",
         padding: "20px",
-        width: "100%",
-        position: "absolute",
         overflow: "auto",
-        zIndex: "1",
       }}
     >
       <ProteinViewer id={id} />
@@ -213,20 +221,6 @@ function LinkCell(protein) {
       <a href={link} target="_blank" rel="noreferrer">
         {id}
       </a>
-    </div>
-  );
-}
-
-function ViewCell(protein) {
-  const { id } = protein;
-  const [showPanel, setShowPanel] = useState(false);
-
-  return (
-    <div>
-      {showPanel ? <ProteinPanel protein={protein} /> : <></>}
-      <button onClick={() => setShowPanel(!showPanel)}>
-        <i className="pi pi-search"></i>
-      </button>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-const discoveredProteins = [
+const archaealProteins = [
   {
     name: "26S proteasome regulatory subunit (Proteasome-activating nucleotidase)",
     id: "Q0W546",
@@ -20,6 +20,9 @@ const discoveredProteins = [
     id: "A2SRT2",
     species: "Methanocorpusculum labreanum (strain ATCC 43576 / DSM 4855 / Z)",
   },
+];
+
+const viralProteins = [
   {
     name: "AAA ATPase",
     id: "A0A1X6WG00",
@@ -32,4 +35,4 @@ const discoveredProteins = [
   },
 ];
 
-export { discoveredProteins };
+export { viralProteins, archaealProteins };

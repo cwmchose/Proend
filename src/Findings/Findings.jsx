@@ -1,4 +1,4 @@
-import { discoveredProteins } from "./discovered-proteins";
+import { viralProteins, archaealProteins } from "./discovered-proteins";
 
 function UniprotLink(id) {
   const link = `https://www.uniprot.org/uniprotkb/${id}/entry#structure`;
@@ -16,6 +16,33 @@ function UniprotLink(id) {
   height: 550
  */
 function DiscoveredList() {
+  function SectionBlock({ header, discoveredProteins }) {
+    return (
+      <>
+        <h2 style={{ color: "#5386e4" }}>{header}</h2>
+        {discoveredProteins.map((p, i) => (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "2rem",
+            }}
+            key={i}
+          >
+            <div style={{ maxWidth: "800px" }}>
+              <h2 style={{ fontStyle: "italic" }}>{p.species}</h2>
+              <h3>{`${p.id} - ${p.name}`}</h3>
+              <UniprotLink id={p.id} />
+            </div>
+            <div>
+              <img src={`/${p.id}.gif`} />
+            </div>
+          </div>
+        ))}
+      </>
+    );
+  }
+
   return (
     <div className="info-container">
       <h1>Proteins of Interest</h1>
@@ -24,25 +51,8 @@ function DiscoveredList() {
         for binding to the proteasome. Models on the left are possible multimers
         of the protiens we composed using Alphafold.
       </p>
-      {discoveredProteins.map((p, i) => (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: "2rem",
-          }}
-          key={i}
-        >
-          <div style={{ maxWidth: "800px" }}>
-            <h2 style={{ fontStyle: "italic" }}>{p.species}</h2>
-            <h3>{`${p.id} - ${p.name}`}</h3>
-            <UniprotLink id={p.id} />
-          </div>
-          <div>
-            <img src={`/${p.id}.gif`} />
-          </div>
-        </div>
-      ))}
+      <SectionBlock header={"Viral"} discoveredProteins={viralProteins} />
+      <SectionBlock header={"Archaeal"} discoveredProteins={archaealProteins} />
     </div>
   );
 }
