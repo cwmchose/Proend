@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { UserContext } from "./contexts/UserContext";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { ProteinViewer } from "./Ngl/Ngl";
 
 // const apiKey = import.meta.env.API_KEY;
 
@@ -54,6 +55,7 @@ export default function LazyLoadDemo() {
   const [loading, setLoading] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
   const [proteins, setProteins] = useState(null);
+  const [selected, setSelected] = useState(null);
   const [lazyState, setlazyState] = useState({
     first: 0,
     rows: 10,
@@ -77,6 +79,7 @@ export default function LazyLoadDemo() {
     setLoading(true);
     if (!user) return;
     getProteins(lazyState, user).then((data) => {
+      data.proteins.forEach((d, i) => (d.rowNumber = i));
       setTotalRecords(data.totalRecords);
       setProteins(data.proteins);
       setLoading(false);
@@ -95,6 +98,13 @@ export default function LazyLoadDemo() {
     event["first"] = 0;
     setlazyState(event);
   };
+
+  const onOpenPanel = (event) => {
+    console.log(event);
+    setSelected(event.data);
+  };
+
+  console.log(selected);
 
   return (
     <div className="page">
@@ -117,6 +127,7 @@ export default function LazyLoadDemo() {
         tableStyle={{ minWidth: "75rem" }}
       >
         <Column
+          body={LinkCell}
           field="id"
           header="Protein ID"
           sortable
@@ -157,14 +168,65 @@ export default function LazyLoadDemo() {
           filter
           filterPlaceholder="Search"
         />
-        <Column body={LinkCell}></Column>
+        <Column body={ViewCell}></Column>
       </DataTable>
+    </div>
+  );
+}
+
+const headerHeight = 137;
+const rowHeight = 85;
+
+function ProteinPanel({ protein }) {
+  const { id, rowNumber } = protein;
+  console.log(rowNumber);
+  const top = headerHeight + rowHeight * (rowNumber + 1) + "px";
+  console.log(top);
+
+  console.log("here");
+  return (
+    <div
+      style={{
+        height: "400px",
+        left: "0",
+        top,
+        backgroundColor: "#f9fafb",
+        border: "1px solid #dee2e6",
+        padding: "20px",
+        width: "100%",
+        position: "absolute",
+        overflow: "auto",
+        zIndex: "1",
+      }}
+    >
+      <ProteinViewer id={id} />
     </div>
   );
 }
 
 function LinkCell(protein) {
   const { id } = protein;
-  const link = `https://www.uniprot.org/uniprotkb/${id}/entry#structure`;
-  return <button onClick={() => window.open(link, "_blank")}>uniprot</button>;
+  const link = `https://www.uniprot.org/uniprotkb/${id}/entry`;
+
+  return (
+    <div>
+      <a href={link} target="_blank" rel="noreferrer">
+        {id}
+      </a>
+    </div>
+  );
+}
+
+function ViewCell(protein) {
+  const { id } = protein;
+  const [showPanel, setShowPanel] = useState(false);
+
+  return (
+    <div>
+      {showPanel ? <ProteinPanel protein={protein} /> : <></>}
+      <button onClick={() => setShowPanel(!showPanel)}>
+        <i className="pi pi-search"></i>
+      </button>
+    </div>
+  );
 }
