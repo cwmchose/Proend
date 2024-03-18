@@ -106,6 +106,7 @@ function AASequence({ sequence }) {
         maxWidth: "1000px",
         display: "flex",
         flexWrap: "wrap",
+        alignContent: "flex-start",
         overflow: "auto",
       }}
     >
@@ -122,6 +123,7 @@ function AASequence({ sequence }) {
 
 export function ProteinViewer({ id }) {
   const [residues, setResidues] = useState([]);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     var stage = new Stage("my-stage", {
@@ -148,12 +150,16 @@ export function ProteinViewer({ id }) {
         }
         const resLetters = resNames.map((r) => aa3To1Map[r]);
         setResidues(resLetters);
+      })
+      .catch(function () {
+        setNotFound(true);
       });
   }, []);
 
   // style={{ height: "300px", width: "400px", border: "1px solid black" }}
   return (
     <div style={{ display: "flex" }}>
+      {notFound && <h2>Sorry, this protein is not in alphafold yet</h2>}
       <div
         id="my-stage"
         style={{ height: "350px", width: "450px", marginRight: "20px" }}

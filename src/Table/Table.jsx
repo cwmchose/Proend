@@ -4,33 +4,14 @@ import { UserContext } from "../contexts/UserContext";
 import { DataTable } from "primereact/datatable";
 import { Dropdown } from "primereact/dropdown";
 import { Column } from "primereact/column";
+import { ProteinViewer } from "../Ngl/Ngl";
 import { getProteins, queryParamsFromEvent } from "./util";
-
-import { ProteinViewer } from "./Ngl/Ngl";
 
 // const apiKey = import.meta.env.API_KEY;
 
 const apiUrl = "http://localhost:5050";
 // const apiUrl =
 //   "https://us-east-2.aws.data.mongodb-api.com/app/data-wlxyk/endpoint";
-
-const mapSort = (event) => {
-  return { [event.sortField]: event.sortOrder };
-};
-
-function DomainFilter(options) {
-  return (
-    <Dropdown
-      value={options.value}
-      options={["bacteria", "eukarya", "archaea", "virus"]}
-      onChange={(e) => options.filterApplyCallback(e.value)}
-      placeholder="Select One"
-      className="p-column-filter"
-      showClear
-      style={{ minWidth: "12rem" }}
-    />
-  );
-}
 
 export default function Table() {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -43,30 +24,45 @@ export default function Table() {
   const [lazyState, setlazyState] = useState({
     first: 0,
     rows: 100,
-    page: 0,
-    sortField: "id",
-    sortOrder: 1,
+    page: parseInt(searchParams.get("p")) || 0,
+    sortField: searchParams.get("sf") || "id",
+    sortOrder: parseInt(searchParams.get("so")) || 1,
     filters: {
-      id: { value: "", matchMode: "contains" },
-      gene: { value: "", matchMode: "contains" },
-      name: { value: "", matchMode: "contains" },
-      motif: { value: "L", matchMode: "contains" },
-      species: { value: "", matchMode: "contains" },
-      domain: { value: null, matchMode: "contains" },
+      id: {
+        value: searchParams.get("id") || "",
+        matchMode: searchParams.get("id_m") || "contains",
+      },
+      gene: {
+        value: searchParams.get("gene") || "",
+        matchMode: searchParams.get("gene_m") || "contains",
+      },
+      name: {
+        value: searchParams.get("name") || "",
+        matchMode: searchParams.get("name_m") || "contains",
+      },
+      motif: {
+        value: searchParams.get("motif") || "",
+        matchMode: searchParams.get("motif_m") || "contains",
+      },
+      species: {
+        value: searchParams.get("species") || "",
+        matchMode: searchParams.get("species_m") || "contains",
+      },
+      domain: {
+        value: searchParams.get("domain") || null,
+        matchMode: "contains",
+      },
     },
   });
 
   useEffect(() => {
     loadLazyData();
   }, [lazyState]);
-  //   loadLazyData(user);
-  // }, [lazyState, user]);
 
   const loadLazyData = () => {
     setLoading(true);
     getProteins(lazyState).then((data) => {
       setSearchParams(queryParamsFromEvent(lazyState));
-      data.proteins.forEach((d, i) => (d.rowNumber = i));
       setTotalRecords(data.totalRecords);
       setProteins(data.proteins);
       setLoading(false);
@@ -205,5 +201,19 @@ function LinkCell(protein) {
         {id}
       </a>
     </div>
+  );
+}
+
+function DomainFilter(options) {
+  return (
+    <Dropdown
+      value={options.value}
+      options={["bacteria", "eukarya", "archaea", "virus"]}
+      onChange={(e) => options.filterApplyCallback(e.value)}
+      placeholder="Select One"
+      className="p-column-filter"
+      showClear
+      style={{ minWidth: "12rem" }}
+    />
   );
 }

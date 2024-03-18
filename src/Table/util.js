@@ -7,21 +7,27 @@ const mapSort = (event) => {
 };
 
 export const queryParamsFromEvent = (event) => {
-  console.log(event);
   const { filters, page, rows, sortField, sortOrder } = event;
-  let qp = `p=${page || 0}&rows${rows}&sf=${sortField}&so=${sortOrder}`;
+  // let qp = `p=${page || 0}&rows=${rows}&sf=${sortField}&so=${sortOrder}`;
+  const qp = {
+    p: page || 0,
+    rows: rows,
+    sf: sortField,
+    so: sortOrder,
+  };
   Object.entries(filters).forEach(([key, value]) => {
-    console.log({ key, value });
-    if (value.value != "") {
-      qp += `&${key}_v=${value.value}&${key}_m=${value.matchMode}`;
+    if (value.value != "" && value.value != null) {
+      qp[key] = value.value;
+    }
+    if (value.matchMode != "" && value.value != null) {
+      qp[key + "m"] = value.matchMode;
     }
   });
-  console.log(qp);
   return qp;
 };
 
 export async function getProteins(event, user) {
-  queryParamsFromEvent(event);
+  // queryParamsFromEvent(event);
   let results = await fetch(`${apiUrl}/proteins`, {
     method: "POST",
     headers: {
@@ -38,7 +44,9 @@ export async function getProteins(event, user) {
     }),
   }).then((resp) => resp.json());
 
+  console.log(results);
   return {
+    success: results.success,
     totalRecords: results.total,
     proteins: results.proteins,
     page: event.page,
