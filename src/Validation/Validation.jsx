@@ -27,7 +27,7 @@ function Validation() {
       <div>
         <img
           style={{ height: "auto", maxWidth: "100%" }}
-          src="/ProteasomePullDownHbYX.png"
+          src="/Validation-Tab-ProteasomePullDownHbYX.png"
         />
       </div>
     </div>

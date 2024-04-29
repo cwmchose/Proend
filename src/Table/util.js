@@ -1,3 +1,7 @@
+
+// window.hostname/api
+//nginx conf /api --> localhost:5050
+
 const apiUrl = "http://localhost:5050";
 // const apiUrl =
 //   "https://us-east-2.aws.data.mongodb-api.com/app/data-wlxyk/endpoint";

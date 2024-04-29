@@ -38,11 +38,22 @@
   justify-content: space-between;
 }
 
+.front-page-image img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
 .container div {
   max-width: 50%;
 }
 
-.info-container p {
+.text-container {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.text-container p {
   margin-bottom: 3rem;
 }
 

@@ -1,4 +1,15 @@
-import { viralProteins, archaealProteins } from "./discovered-proteins";
+import {
+  viralProteins,
+  archaealProteins,
+  obeliskProteins,
+} from "./discovered-proteins";
+import { TabView, TabPanel } from "primereact/tabview";
+
+const viralText =
+  "By exploring the AlphaFold-predicted structures of viral proteins, we aim to uncover new functional roles and implications in human health and disease.The following proteins were identified by this tool as likely candidates for binding to the proteasome. Models on the left are possible oligomers of the proteins we predicted by using Alphafold multimer.";
+const archaeaText =
+  "Currently, we are implementing AlphaFold Multimer to predict the structures of multimeric protein complexes, particularly focusing on proteins with the HbYX motif and domains of known PAN activators. In addition, we are testing recombinants of  these proteins to check activity and binding to the archeal 20S proteasome.";
+const obeliskText = "Obelisks";
 
 function UniprotLink(id) {
   const link = `https://www.uniprot.org/uniprotkb/${id}/entry#structure`;
@@ -16,10 +27,10 @@ function UniprotLink(id) {
   height: 550
  */
 function DiscoveredList() {
-  function SectionBlock({ header, discoveredProteins }) {
+  function SectionBlock({ text, discoveredProteins }) {
     return (
       <>
-        <h2 style={{ color: "#5386e4" }}>{header}</h2>
+        <p>{text}</p>
         {discoveredProteins.map((p, i) => (
           <div
             style={{
@@ -45,14 +56,29 @@ function DiscoveredList() {
 
   return (
     <div className="info-container">
-      <h1>Proteins of Interest</h1>
+      <h2>Proteins of Interest</h2>
       <p>
         The following proteins were identified by this tool as likely candidates
         for binding to the proteasome. Models on the left are possible multimers
         of the protiens we composed using Alphafold.
       </p>
-      <SectionBlock header={"Viral"} discoveredProteins={viralProteins} />
-      <SectionBlock header={"Archaeal"} discoveredProteins={archaealProteins} />
+      <TabView>
+        <TabPanel header="Viral">
+          <SectionBlock text={viralText} discoveredProteins={viralProteins} />
+        </TabPanel>
+        <TabPanel header="Archael">
+          <SectionBlock
+            text={archaeaText}
+            discoveredProteins={archaealProteins}
+          />
+        </TabPanel>
+        {/* <TabPanel header="Obelisks">
+          <SectionBlock
+            text={obeliskText}
+            discoveredProteins={obeliskProteins}
+          />
+        </TabPanel> */}
+      </TabView>
     </div>
   );
 }
@@ -60,7 +86,7 @@ function DiscoveredList() {
 function Findings() {
   return (
     <div className="page">
-      <h1>Findings</h1>
+      <h2>Findings</h2>
       <p>
         ProEnd tool, has identified a unique set of proteins with the HbYX
         motif, a key conserved element in proteasomal ATPases and involved in
@@ -71,19 +97,14 @@ function Findings() {
         HbYX motif's presence in these proteins suggests a specialized function
         in proteasome binding and potentially in guiding the proteasome to
         specific cellular locations or revealing hidden motifs for targeted
-        protein degradation. We are implementing AlphaFold Multimer to predict
-        the structures of multimeric protein complexes, particularly focusing on
+        protein degradation.
+      </p>
+      <p>
+        Currently, we are implementing AlphaFold Multimer to predict the
+        structures of multimeric protein complexes, particularly focusing on
         proteins with the HbYX motif and domains of known activators. This
         approach provides a deeper understanding of how these proteins interact
         within the cell and their potential roles in diseases.
-      </p>
-      <p>
-        By exploring the AlphaFold-predicted structures of these proteins, we
-        aim to uncover their functional roles and implications in human health
-        and disease. This database serves as a resource for researchers to
-        explore the potential of HbYX proteins in regulating various cellular
-        processes and offers a platform for the scientific community to engage
-        with these complex molecular interactions.
       </p>
       <DiscoveredList />
     </div>

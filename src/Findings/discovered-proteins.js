@@ -24,6 +24,11 @@ const archaealProteins = [
 
 const viralProteins = [
   {
+    name: "ClpB protein",
+    id: "A0A2L0V0F4",
+    species: "Agrobacterium phage Atu_ph07",
+  },
+  {
     name: "AAA ATPase",
     id: "A0A1X6WG00",
     species: "Pacmanvirus A23",
@@ -35,4 +40,32 @@ const viralProteins = [
   },
 ];
 
-export { viralProteins, archaealProteins };
+const obeliskProteins = [
+  {
+    name: "Obelisk-00811",
+    id: "Obelisk-00811",
+    species: "Obelisk-00811",
+  },
+  {
+    name: "Obelisk-000028",
+    id: "Obelisk-000028",
+    species: "Obelisk-000028",
+  },
+  {
+    name: "Obelisk28inComplexMonomer",
+    id: "Obelisk28inComplexMonomer",
+    species: "Obelisk28inComplexMonomer",
+  },
+  {
+    name: "Obelisk684inOligomer",
+    id: "Obelisk684inOligomer",
+    species: "Obelisk684inOligomer",
+  },
+  {
+    name: "Obelisk684OligomerIncomplex20S",
+    id: "Obelisk684OligomerIncomplex20S",
+    species: "Obelisk684OligomerIncomplex20S",
+  },
+];
+
+export { viralProteins, archaealProteins, obeliskProteins };
