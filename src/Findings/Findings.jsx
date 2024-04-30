@@ -1,8 +1,4 @@
-import {
-  viralProteins,
-  archaealProteins,
-  obeliskProteins,
-} from "./discovered-proteins";
+import { viralProteins, archaealProteins } from "./discovered-proteins";
 import { obeliskData } from "./obeliskTableData";
 import { TabView, TabPanel } from "primereact/tabview";
 import { DataTable } from "primereact/datatable";
