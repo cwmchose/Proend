@@ -64,6 +64,13 @@
   padding: 10px;
 }
 
+.gifs-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4rem;
+}
+
 button {
   background-color: black;
   color: white;
