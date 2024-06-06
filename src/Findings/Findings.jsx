@@ -1,5 +1,6 @@
 import { viralProteins, archaealProteins } from "./discovered-proteins";
 import { obeliskData } from "./obeliskTableData";
+import { homoSapienTableData, thermoplasmaTableData } from "./independentData";
 import { TabView, TabPanel } from "primereact/tabview";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -22,6 +23,94 @@ function CaptionGif({ src, caption }) {
       <img src={src} />
       <p>{caption}</p>
     </div>
+  );
+}
+
+function IndependentSection() {
+  function IdCell(protein) {
+    const { uniprotId } = protein;
+    const link = `https://www.uniprot.org/uniprotkb/${uniprotId}/entry`;
+
+    return (
+      <div>
+        <a href={link} target="_blank" rel="noreferrer">
+          {uniprotId}
+        </a>
+      </div>
+    );
+  }
+
+  function ArticleCell(protein) {
+    const { validatedBy } = protein;
+    console.log(validatedBy);
+    const intArray = validatedBy.toString().split(";");
+
+    const urls = {
+      1: "https://www.embopress.org/doi/10.1038/s44320-024-00015-y",
+      2: "https://www.sciencedirect.com/science/article/pii/S1535947620330449?via%3Dihub#sec1",
+      3: "https://www.embopress.org/doi/full/10.15252/msb.20145497#msb145497-sup-0013",
+      4: "https://doi.org/10.1074/jbc.M112.386458",
+    };
+
+    return (
+      <div>
+        {intArray.map((i) => (
+          <a
+            style={{ marginRight: "5px" }}
+            key={i}
+            href={urls[i]}
+            target="_blank"
+            rel="noreferrer"
+          >
+            [{i}]
+          </a>
+        ))}
+      </div>
+    );
+  }
+  return (
+    <>
+      <div>
+        <p>
+          This table contains proteins found by other researchers to bind to the
+          proteasome
+        </p>
+        <DataTable
+          value={[...homoSapienTableData, ...thermoplasmaTableData]}
+          scrollable
+          sort
+          scrollHeight="400px"
+          tableStyle={{ minWidth: "50rem", maxHeight: "10rem" }}
+        >
+          <Column
+            body={IdCell}
+            sortable
+            style={{ width: "25%" }}
+            field="uniprotId"
+            header="ID"
+          ></Column>
+          <Column
+            sortable
+            style={{ width: "25%" }}
+            field="motif"
+            header="Motif"
+          ></Column>
+          <Column
+            sortable
+            style={{ width: "25%" }}
+            field="origin"
+            header="Origin"
+          ></Column>
+          <Column
+            style={{ width: "25%" }}
+            body={ArticleCell}
+            sortable
+            field="validatedBy"
+            header="Validated By"
+          ></Column>
+        </DataTable>
+      </div>
+    </>
   );
 }
 
@@ -174,6 +263,9 @@ function DiscoveredList() {
         </TabPanel>
         <TabPanel header="Obelisks">
           <ObeliskSection />
+        </TabPanel>
+        <TabPanel header="Independent">
+          <IndependentSection />
         </TabPanel>
       </TabView>
     </div>
