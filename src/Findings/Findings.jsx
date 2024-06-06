@@ -55,7 +55,16 @@ function ObeliskSection() {
         </DataTable>
         <p>
           The following models are obelisks contructed via alphafold that may be
-          proteasome activators
+          proteasome activators: Obelisks are a newly discovered class of
+          viroid-like elements identified in human gut metatranscriptomic data (
+          <a href="https://doi.org/10.1101/2024.01.20.576352">link doi</a>).
+          These elements have circular RNA genomes approximately 1 kilobase in
+          size and exhibit rod-like secondary structures throughout their entire
+          genome. They encode a novel protein superfamily called "Oblins" and
+          form a distinct phylogenetic group with no detectable sequence or
+          structural similarity to known biological agents. Obelisks are
+          prevalent in human microbiomes and so far just 50 of them have the
+          HbYX motif!
         </p>
         <div
           style={{

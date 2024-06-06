@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import logo from "./assets/proend-logo.png";
+import logo from "./assets/proend-logo2.png";
 
 function Layout() {
   return (

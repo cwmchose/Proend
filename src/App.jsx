@@ -6,7 +6,6 @@ import "primeicons/primeicons.css";
 import "./App.css";
 
 import Table from "./Table/Table";
-// import Table from "./Table";
 import Findings from "./Findings/Findings";
 import Validation from "./Validation/Validation";
 import Contact from "./Contact/Contact";

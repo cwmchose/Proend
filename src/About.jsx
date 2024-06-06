@@ -40,19 +40,6 @@ function About() {
           substrate entry, thus regulating protein degradation pathways
           effectively.
         </p>
-        <h2>Exclusion of Alanine:</h2>
-        <p>
-          Despite its hydrophobic nature, alanine was excluded from our search
-          criteria for the 'X' position in the HbYX motif. This decision was
-          based on alanine's small size, which we anticipated would not provide
-          sufficient hydrophobic interaction for meaningful affinity towards the
-          proteasome. In the context of proteasome activation and
-          protein-protein interactions, the size and the nature of the side
-          chain play a pivotal role in ensuring specificity and stability of the
-          binding. Alanine, due to its minimal side chain, is less likely to
-          contribute to the specific interactions needed for effective
-          proteasomal activation.
-        </p>
         <h2>Exclusion of Cysteine:</h2>
         <p>
           Cysteine presents a unique case; while it is hydrophobic, its

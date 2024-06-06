@@ -103,7 +103,7 @@ function AASequence({ sequence }) {
     <div
       style={{
         fontFamily: "monospace",
-        maxWidth: "1000px",
+        maxWidth: "60%",
         display: "flex",
         flexWrap: "wrap",
         alignContent: "flex-start",
