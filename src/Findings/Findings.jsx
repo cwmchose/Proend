@@ -10,7 +10,7 @@ const viralText =
 const archaeaText =
   "Currently, we are implementing AlphaFold Multimer to predict the structures of multimeric protein complexes, particularly focusing on proteins with the HbYX motif and domains of known PAN activators. In addition, we are testing recombinants of  these proteins to check activity and binding to the archeal 20S proteasome.";
 
-function UniprotLink(id) {
+function UniprotLink({ id }) {
   const link = `https://www.uniprot.org/uniprotkb/${id}/entry#structure`;
   return (
     <button onClick={() => window.open(link, "_blank")}>See in Uniprot</button>
