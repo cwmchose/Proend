@@ -42,7 +42,7 @@ function About() {
         </p>
         <h2>Exclusion of Cysteine:</h2>
         <p>
-          Cysteine presents a unique case; while it is hydrophobic, its
+          In our opinion, cysteine presents a unique case; while it is hydrophobic, its
           electronegative sulfur atom and propensity to form disulfide bonds
           impart it with distinct properties that are not typically conducive
           for the role of a proteasome activator. Disulfide bonds can lead to
